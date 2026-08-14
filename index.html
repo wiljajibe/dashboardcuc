@@ -44,15 +44,61 @@
       <footer>Fuentes institucionales CUC: reporte de estudiantes matriculados por programa/nivel (4 de agosto, 11:04) y estadística de inscripción y admisión normal y reserva de cupo (4 de agosto, 15:12 y 15:13) · Periodo 2026-2</footer>
     </section>
   </main>
-  <script>
-    const programs=[
-      {name:"Administración Ambiental",meta:0,academic:0},{name:"Administración de Empresas",meta:35,academic:39},{name:"Administración de Empresas Virtual",meta:0,academic:0},{name:"Administración de Servicios de Salud",meta:8,academic:15},{name:"Arquitectura",meta:36,academic:27},{name:"Banca y Finanzas",meta:0,academic:0},{name:"Comunicación Social y Medios Digitales",meta:20,academic:23},{name:"Contaduría Pública",meta:22,academic:33},{name:"Creación y Diseño",meta:8,academic:8},{name:"Derecho",meta:35,academic:19},{name:"Derecho Villavicencio",meta:7,academic:7},{name:"Ingeniería Ambiental",meta:12,academic:6},{name:"Ingeniería Civil",meta:48,academic:37},{name:"Ingeniería de Sistemas",meta:60,academic:45},{name:"Ingeniería Eléctrica",meta:20,academic:13},{name:"Ingeniería Electrónica",meta:12,academic:9},{name:"Ingeniería Industrial",meta:30,academic:30},{name:"Ingeniería Mecánica",meta:23,academic:9},{name:"Licenciatura en Educación Básica Primaria",meta:0,academic:0},{name:"Mercadeo y Publicidad",meta:27,academic:34},{name:"Negocios Internacionales",meta:40,academic:52},{name:"Psicología",meta:40,academic:30},{name:"Psicología Villavicencio",meta:2,academic:2},{name:"Técnico en Desarrollo de Software",meta:40,academic:32},{name:"Técnico en Desarrollo de Software - Virtual",meta:8,academic:1},{name:"Técnico en Entrenamiento Deportivo",meta:10,academic:12},{name:"Medicina",meta:20,academic:22}
-    ];
-    const funnel=[
-      {name:"Medicina",pre:126,registered:54,admitted:44,enrolled:22},{name:"Ingeniería Civil",pre:70,registered:51,admitted:48,enrolled:32},{name:"Ingeniería Eléctrica",pre:24,registered:17,admitted:17,enrolled:11},{name:"Ingeniería Mecánica",pre:24,registered:14,admitted:13,enrolled:7},{name:"Ingeniería Electrónica",pre:13,registered:11,admitted:11,enrolled:9},{name:"Ingeniería Industrial",pre:58,registered:40,admitted:40,enrolled:28},{name:"Ingeniería de Sistemas",pre:77,registered:52,admitted:50,enrolled:34},{name:"Ingeniería Ambiental",pre:13,registered:10,admitted:10,enrolled:6},{name:"Arquitectura",pre:45,registered:28,admitted:24,enrolled:18},{name:"Creación y Diseño",pre:16,registered:13,admitted:11,enrolled:7},{name:"Derecho",pre:43,registered:22,admitted:20,enrolled:16},{name:"Derecho Villavicencio",pre:11,registered:8,admitted:7,enrolled:6},{name:"Técnico en Desarrollo de Software",pre:55,registered:42,admitted:37,enrolled:28},{name:"Administración de Empresas",pre:64,registered:46,admitted:43,enrolled:31},{name:"Contaduría Pública",pre:51,registered:34,admitted:34,enrolled:29},{name:"Negocios Internacionales",pre:83,registered:64,admitted:59,enrolled:45},{name:"Administración de Servicios de Salud",pre:25,registered:15,admitted:14,enrolled:13},{name:"Mercadeo y Publicidad",pre:48,registered:39,admitted:38,enrolled:33},{name:"Psicología",pre:58,registered:42,admitted:35,enrolled:26},{name:"Psicología Villavicencio",pre:3,registered:3,admitted:3,enrolled:2},{name:"Comunicación Social y Medios Digitales",pre:36,registered:31,admitted:29,enrolled:22},{name:"Técnico en Entrenamiento Deportivo",pre:25,registered:18,admitted:15,enrolled:12}
-    ];
-    const totals={pre:968,registered:654,admitted:602,enrolled:437,pending:365,rejected:1};
-    const financial=new Map(funnel.map(p=>[p.name,p.enrolled]));
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script type="module">
+const excelUrl="./Dashboard_Matriculas_CUC_2026-2.xlsx?v="+Date.now();
+
+const response=await fetch(excelUrl);
+if(!response.ok) throw new Error("No se pudo cargar el Excel");
+
+const buffer=await response.arrayBuffer();
+const workbook=XLSX.read(buffer,{type:"array"});
+
+const programRows=XLSX.utils.sheet_to_json(
+  workbook.Sheets["Consolidado por programa"],
+  {range:3,defval:null}
+);
+
+const funnelRowsExcel=XLSX.utils.sheet_to_json(
+  workbook.Sheets["Embudo de admisiones"],
+  {range:3,defval:null}
+);
+
+const summaryRows=XLSX.utils.sheet_to_json(
+  workbook.Sheets["Resumen ejecutivo"],
+  {range:3,defval:null}
+);
+
+const programs=programRows.map(row=>({
+  name:row["Programa"],
+  meta:Number(row["Meta institucional"]||0),
+  academic:Number(row["Matrícula académica"]||0),
+  financial:row["Matrícula financiera"]==null?null:Number(row["Matrícula financiera"])
+}));
+
+const funnel=funnelRowsExcel.map(row=>({
+  name:row["Programa"],
+  pre:Number(row["Preinscritos"]||0),
+  registered:Number(row["Inscritos"]||0),
+  admitted:Number(row["Admitidos"]||0),
+  enrolled:Number(row["Matrícula financiera"]||0)
+}));
+
+const summary={};
+summaryRows.forEach(row=>{
+  summary[row["Indicador"]]=row["Resultado"];
+  summary[row["Indicador del embudo"]]=row["Resultado_1"];
+});
+
+const totals={
+  pre:Number(summary["Preinscritos"]||0),
+  registered:Number(summary["Inscritos"]||0),
+  admitted:Number(summary["Admitidos"]||0),
+  enrolled:Number(summary["Matrícula financiera"]||0),
+  pending:Number(summary["Por admitir"]||0),
+  rejected:Number(summary["Rechazados"]||0)
+};
+    const financial=new Map(programs.map(p=>[p.name,p.financial]));
     const totalMeta=programs.reduce((s,p)=>s+p.meta,0),totalAcademic=programs.reduce((s,p)=>s+p.academic,0),progress=totals.enrolled/totalMeta*100,gap=totalAcademic-totals.enrolled;
     const pct=n=>n.toFixed(1).replace(".",",")+"%"; const online=p=>Math.round(p.meta*.2);
     function metrics(p){const f=financial.has(p.name)?financial.get(p.name):null,pr=p.meta&&f!==null?f/p.meta*100:null,remaining=p.meta&&f!==null?Math.max(p.meta-f,0):null,g=f===null?null:p.academic-f;let status="Sin meta",tone="muted";if(p.meta>0&&f===null)status="Sin dato financiero";else if(p.meta>0&&f>p.meta){status="Superada";tone="success"}else if(p.meta>0&&f===p.meta){status="Cumplida";tone="success"}else if(pr!==null&&pr>=80){status="Cerca";tone="warning"}else if(pr!==null&&pr>=50){status="En progreso";tone="progress"}else if(p.meta>0){status="Rezagada";tone="danger"}return{f,pr,remaining,g,status,tone}}
