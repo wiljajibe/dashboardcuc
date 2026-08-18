@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Acceso al portal institucional CUC">
+  <meta name="theme-color" content="#c8102e">
+  <title>Acceso · Portal CUC</title>
+  <link rel="stylesheet" href="./assets/css/dashboard.css">
+</head>
+<body class="login-page">
+  <main class="login-card">
+    <div class="login-brand">
+      <span class="brand-mark">CUC</span>
+      <div><strong>Universidad de la Costa</strong><br><small>Portal de indicadores</small></div>
+    </div>
+    <h1>Iniciar sesión</h1>
+    <p>Utiliza el usuario institucional autorizado para consultar los dashboards disponibles.</p>
+
+    <form class="login-form" id="loginForm">
+      <label for="email">Correo electrónico
+        <input id="email" type="email" autocomplete="username" required>
+      </label>
+      <label for="password">Contraseña
+        <input id="password" type="password" autocomplete="current-password" required>
+      </label>
+      <button id="loginButton" type="submit">Ingresar</button>
+    </form>
+    <div class="login-message" id="loginMessage" role="status" aria-live="polite">Validando configuración de acceso…</div>
+  </main>
+  <script type="module" src="./assets/js/login.js"></script>
+</body>
+</html>

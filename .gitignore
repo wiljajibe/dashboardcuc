@@ -1,0 +1,5 @@
+# Copias locales que no deben publicarse en GitHub
+backups/
+
+# Archivos finales entregados por Codex; la web usa la copia ubicada en la raíz.
+outputs/
