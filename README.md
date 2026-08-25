@@ -5,6 +5,7 @@ Portal privado de indicadores publicado en `wiljajibe.com`. La página exige una
 ## Seguridad activa
 
 - Inicio de sesión con correo y contraseña.
+- Bloqueo preventivo en el navegador durante 15 minutos después de 3 intentos fallidos para el mismo correo; complementa los límites automáticos de Supabase.
 - Registro público desactivado: los usuarios se crean únicamente por invitación.
 - Permisos individuales por usuario y dashboard.
 - Datos almacenados en Supabase, no en archivos públicos de GitHub.

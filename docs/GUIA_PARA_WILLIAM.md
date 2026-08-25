@@ -8,6 +8,8 @@
 4. Las reglas de la base de datos revisan qué dashboard puede consultar.
 5. Solamente entonces se envía la información autorizada.
 
+La pantalla de acceso bloquea durante 15 minutos un correo que acumule 3 intentos fallidos en el mismo navegador. Esta barrera adicional trabaja junto con los límites automáticos de Supabase.
+
 La página puede seguir alojada gratuitamente en GitHub Pages porque allí solo permanece el código. Los datos institucionales viven en Supabase.
 
 ## Crear un usuario
