@@ -35,6 +35,11 @@ function showError(error) {
 
 async function start() {
   try {
+    const authFlow = new URLSearchParams(window.location.hash.slice(1)).get("type");
+    if (authFlow === "invite" || authFlow === "recovery") {
+      window.location.replace(`./set-password.html${window.location.hash}`);
+      return;
+    }
     renderDashboardNavigation();
     const sessionState = await requireSession();
     if (sessionState === null) return;

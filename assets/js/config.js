@@ -2,7 +2,7 @@ export const APP_CONFIG = Object.freeze({
   defaultPeriod: "2026-2",
   dashboardId: "matriculas",
   data: {
-    mode: "excel",
+    mode: "supabase",
     excelUrl: "./Dashboard_Matriculas_CUC_2026-2.xlsx",
     supabaseSlug: "matriculas",
   },

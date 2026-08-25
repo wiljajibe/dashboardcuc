@@ -20,7 +20,9 @@ async function initialize() {
   try {
     const state = await getSession();
     if (state.session) window.location.replace(AUTH_CONFIG.homePage);
-    else setMessage("Ingresa tus credenciales autorizadas.");
+    else if (new URLSearchParams(window.location.search).get("status") === "password-set") {
+      setMessage("Contraseña creada correctamente. Ya puedes iniciar sesión.");
+    } else setMessage("Ingresa tus credenciales autorizadas.");
   } catch (error) {
     setMessage(error.message, true);
   }

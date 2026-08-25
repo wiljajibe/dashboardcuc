@@ -156,7 +156,10 @@ revoke all on public.profiles from anon;
 revoke all on public.dashboards from anon;
 revoke all on public.dashboard_permissions from anon;
 revoke all on public.dashboard_datasets from anon;
+revoke all on function public.is_admin() from public, anon;
+revoke all on function public.handle_new_user() from public, anon, authenticated;
 
+grant usage on schema public to authenticated;
 grant select, insert, update, delete on public.profiles to authenticated;
 grant select, insert, update, delete on public.dashboards to authenticated;
 grant select, insert, update, delete on public.dashboard_permissions to authenticated;

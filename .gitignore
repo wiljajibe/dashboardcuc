@@ -1,5 +1,17 @@
-# Copias locales que no deben publicarse en GitHub
+# Datos institucionales: nunca deben publicarse en el repositorio.
+*.xlsx
+*.xls
+*.pdf
+*.csv
 backups/
-
-# Archivos finales entregados por Codex; la web usa la copia ubicada en la raíz.
 outputs/
+
+# Credenciales y configuración privada local.
+.env
+.env.*
+!.env.example
+
+# Archivos temporales.
+node_modules/
+.tmp/
+*.log

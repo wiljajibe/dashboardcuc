@@ -1,60 +1,47 @@
 # Guía del proyecto para William
 
-## En palabras simples
+## Cómo funciona ahora
 
-La página actual seguirá funcionando con el Excel como hasta ahora. La copia local fue organizada para que sea más fácil mantenerla y para poder agregar otros dashboards.
+1. La persona entra en `wiljajibe.com`.
+2. Si no tiene una sesión activa, la página la envía al inicio de sesión.
+3. Supabase comprueba su correo, contraseña y estado.
+4. Las reglas de la base de datos revisan qué dashboard puede consultar.
+5. Solamente entonces se envía la información autorizada.
 
-El acceso con usuario todavía no está encendido. Esto es intencional: primero hay que crear el servicio seguro donde vivirán los usuarios, permisos y datos privados. Encender una pantalla de acceso sin mover los datos no protegería la información.
+La página puede seguir alojada gratuitamente en GitHub Pages porque allí solo permanece el código. Los datos institucionales viven en Supabase.
 
-## Lo que yo puedo hacer desde esta copia
+## Crear un usuario
 
-- Corregir y mejorar la página.
-- Integrar el segundo dashboard cuando tengas sus archivos o datos.
-- Preparar la lectura de sus datos.
-- Conectar la página con Supabase después de que crees el proyecto.
-- Probar todo antes de publicarlo.
+Los visitantes no pueden registrarse por su cuenta.
 
-## Lo único que necesitaré de ti para activar usuarios
+1. En Supabase abre **Authentication → Users**.
+2. Selecciona **Add user → Send invitation**.
+3. Escribe el correo autorizado.
+4. Asigna permiso al dashboard correspondiente.
+5. La persona abre el correo y crea una contraseña de al menos 12 caracteres.
 
-1. Crear una cuenta gratuita en Supabase.
-2. Crear un proyecto nuevo.
-3. Entregarme la **Project URL** y la **Publishable key** de ese proyecto.
-4. No compartir la contraseña del proyecto, la `service_role key` ni ninguna `secret key`.
+Si alguien deja de necesitar acceso, se desactiva su perfil o se elimina su permiso. No es necesario modificar la página.
 
-Con esos dos datos públicos podré conectar la página. Después se crearán los usuarios y se decidirá qué dashboard puede ver cada persona.
+## Actualizar los datos
 
-## Cómo quedará el acceso
+Continúa enviando los PDF del nuevo corte en esta conversación. El proceso será:
 
-- Cada persona entra con su correo y contraseña.
-- Un usuario normal solo ve los dashboards que le fueron asignados.
-- Un administrador puede asignar permisos y actualizar información.
-- Los datos dejan de estar guardados como un Excel público en GitHub.
-- Si se desactiva un usuario, pierde el acceso.
+1. Extraer y validar las cifras.
+2. Entregarte el Excel para tu respaldo local.
+3. Cargar el corte validado en Supabase.
+4. Comprobar que el dashboard muestre la fecha y los totales nuevos.
 
-## Cómo integrar el segundo dashboard
+No se publicarán PDF, Excel ni CSV en GitHub.
 
-Cuando estés listo, copia su carpeta o archivos dentro de este proyecto y dime:
+## Integrar otro dashboard
 
-- qué información muestra;
-- de dónde salen los datos;
-- quiénes deben verlo;
-- cada cuánto se actualiza.
+El segundo dashboard utilizará el mismo inicio de sesión. Cada usuario podrá recibir permiso para Matrículas, Cruce de Matriculados o ambos. No hace falta crear otro proyecto de Supabase.
 
-No necesitas modificar código. Yo revisaré su estructura, lo adaptaré al menú común y conservaré una apariencia uniforme.
+## Reglas que debes recordar
 
-## Qué no debes hacer todavía
-
-- No reemplaces la página pública con esta copia sin probarla.
-- No publiques claves secretas en GitHub.
-- No crees usuarios hasta que la base de datos y los permisos estén activados.
-- No elimines el Excel actual mientras la página siga usando el modo público.
-
-## Orden recomendado
-
-1. Probar y publicar las mejoras del dashboard actual.
-2. Corregir el dominio y su certificado HTTPS.
-3. Crear Supabase y activar usuarios/permisos.
-4. Mover los datos a la fuente privada.
-5. Integrar el segundo dashboard.
-6. Hacer la revisión final con un usuario de prueba.
-
+- Nunca envíes ni publiques una `secret key`, `service_role` o contraseña administrativa.
+- La clave `publishable` no es secreta; las políticas RLS son las que protegen los datos.
+- No agregues PDF, Excel o CSV al repositorio.
+- Conserva respaldos locales de los archivos fuente.
+- Crea usuarios únicamente por invitación.
+- Desactiva inmediatamente a quien ya no deba consultar la información.

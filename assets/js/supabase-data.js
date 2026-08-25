@@ -27,7 +27,7 @@ export async function loadSupabaseDashboard() {
     ...dataset.payload,
     metadata: {
       ...dataset.payload.metadata,
-      cutDate: dataset.source_date ?? dataset.payload.metadata?.cutDate ?? "Fecha no informada",
+      cutDate: dataset.payload.metadata?.cutDate ?? dataset.source_date ?? "Fecha no informada",
       loadedAt: new Date().toISOString(),
       sourceMode: "supabase",
     },
