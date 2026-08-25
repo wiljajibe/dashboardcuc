@@ -1,5 +1,5 @@
-import { APP_CONFIG } from "./config.js";
-import { getAuthClient } from "./auth.js";
+import { APP_CONFIG } from "./config.js?v=20260824-secure";
+import { getAuthClient } from "./auth.js?v=20260824-secure";
 
 export async function loadSupabaseDashboard() {
   const client = await getAuthClient();

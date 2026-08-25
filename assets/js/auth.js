@@ -1,4 +1,4 @@
-import { AUTH_CONFIG } from "./auth-config.js";
+import { AUTH_CONFIG } from "./auth-config.js?v=20260824-secure";
 
 let clientPromise;
 

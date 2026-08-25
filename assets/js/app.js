@@ -1,6 +1,6 @@
-import { APP_CONFIG } from "./config.js";
-import { requireSession, signOut } from "./auth.js";
-import { loadDashboardData } from "./data-source.js";
+import { APP_CONFIG } from "./config.js?v=20260824-secure";
+import { requireSession, signOut } from "./auth.js?v=20260824-secure";
+import { loadDashboardData } from "./data-source.js?v=20260824-secure";
 import { renderMatriculasDashboard } from "./dashboard-matriculas.js";
 import { byId, escapeHtml } from "./utils.js";
 

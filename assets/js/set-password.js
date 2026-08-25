@@ -1,4 +1,4 @@
-import { AUTH_CONFIG, getAuthClient, isAuthEnabled } from "./auth.js";
+import { AUTH_CONFIG, getAuthClient, isAuthEnabled } from "./auth.js?v=20260824-secure";
 import { byId } from "./utils.js";
 
 const form = byId("passwordForm");

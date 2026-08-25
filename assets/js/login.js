@@ -1,4 +1,4 @@
-import { AUTH_CONFIG, getSession, isAuthEnabled, signIn } from "./auth.js";
+import { AUTH_CONFIG, getSession, isAuthEnabled, signIn } from "./auth.js?v=20260824-secure";
 import { byId } from "./utils.js";
 
 const form = byId("loginForm");
