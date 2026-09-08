@@ -1,4 +1,4 @@
-import { AUTH_CONFIG, getSession, isAuthEnabled, signIn } from "./auth.js?v=20260824-secure";
+import { AUTH_CONFIG, getSession, isAuthEnabled, signIn } from "./auth.js?v=20260908-periods";
 import { byId } from "./utils.js";
 
 const form = byId("loginForm");
@@ -6,6 +6,7 @@ const button = byId("loginButton");
 const message = byId("loginMessage");
 const emailInput = byId("email");
 const passwordInput = byId("password");
+const destination = new URLSearchParams(window.location.search).get("period") === "2027-1" ? "./2027-1.html" : AUTH_CONFIG.homePage;
 
 const MAX_ATTEMPTS = 3;
 const LOCK_MINUTES = 15;
@@ -112,7 +113,7 @@ async function initialize() {
   }
   try {
     const state = await getSession();
-    if (state.session) window.location.replace(AUTH_CONFIG.homePage);
+    if (state.session) window.location.replace(destination);
     else if (new URLSearchParams(window.location.search).get("status") === "password-set") {
       setMessage("Contraseña creada correctamente. Ya puedes iniciar sesión.");
     } else setMessage("Ingresa tus credenciales autorizadas.");
@@ -133,7 +134,7 @@ form.addEventListener("submit", async event => {
   try {
     await signIn(email, passwordInput.value);
     clearGuard(email);
-    window.location.replace(AUTH_CONFIG.homePage);
+    window.location.replace(destination);
   } catch (error) {
     button.disabled = false;
     if (error?.code === "invalid_credentials") recordFailedAttempt(email);

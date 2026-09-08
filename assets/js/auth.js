@@ -37,7 +37,8 @@ export async function getSession() {
 export async function requireSession() {
   const state = await getSession();
   if (state.enabled && !state.session) {
-    window.location.replace(AUTH_CONFIG.loginPage);
+    const period = window.location.pathname.endsWith('/2027-1.html') ? '2027-1' : '2026-2';
+    window.location.replace(`${AUTH_CONFIG.loginPage}?period=${period}`);
     return null;
   }
   return state;

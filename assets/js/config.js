@@ -1,5 +1,5 @@
 export const APP_CONFIG = Object.freeze({
-  defaultPeriod: "2026-2",
+  defaultPeriod: window.location.pathname.endsWith('/2027-1.html') ? "2027-1" : "2026-2",
   dashboardId: "matriculas",
   data: {
     mode: "supabase",

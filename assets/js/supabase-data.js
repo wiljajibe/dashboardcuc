@@ -1,5 +1,5 @@
-import { APP_CONFIG } from "./config.js?v=20260824-secure";
-import { getAuthClient } from "./auth.js?v=20260824-secure";
+import { APP_CONFIG } from "./config.js?v=20260908-periods";
+import { getAuthClient } from "./auth.js?v=20260908-periods";
 
 export async function loadSupabaseDashboard() {
   const client = await getAuthClient();
@@ -17,11 +17,14 @@ export async function loadSupabaseDashboard() {
     .from("dashboard_datasets")
     .select("payload, source_date, created_at")
     .eq("dashboard_id", dashboard.id)
+    .eq("payload->metadata->>period", APP_CONFIG.defaultPeriod)
     .eq("active", true)
     .order("created_at", { ascending: false })
     .limit(1)
-    .single();
-  if (datasetError || !dataset?.payload) throw new Error("Este dashboard todavía no tiene información publicada.");
+    .maybeSingle();
+  if (datasetError) throw new Error("No fue posible consultar la información del semestre. Intenta nuevamente.");
+  if (!dataset?.payload) return null;
+  if (dataset.payload.metadata?.period !== APP_CONFIG.defaultPeriod) throw new Error("El periodo del reporte no coincide con el semestre seleccionado.");
 
   return {
     ...dataset.payload,
